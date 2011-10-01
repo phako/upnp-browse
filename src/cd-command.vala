@@ -71,8 +71,4 @@ class CdCommand : Command {
 
         return true;
     }
-
-    public override OptionEntry[]? options () {
-        return null;
-    }
 }

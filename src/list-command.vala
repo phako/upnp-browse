@@ -26,8 +26,4 @@ class ListCommand : Command {
 
         return true;
     }
-
-    public override OptionEntry[]? options () {
-        return null;
-    }
 }

@@ -18,14 +18,8 @@
 using GUPnP;
 
 class BrowseCommand : Command {
-    static string _container = null;
-    static string _sort_criteria = "+upnp:class,+dc:title";
-
-    const OptionEntry[] _options = {
-        { "container", 'c', 0, OptionArg.STRING, ref _container, "ID of the container to browse", "ID" },
-        { "sort-criteria", 's', 0, OptionArg.STRING, ref _sort_criteria, "sort order of the result", "SORT-ORDER" },
-        { null }
-    };
+    private string container = null;
+    private string sort_criteria = "+upnp:class,+dc:title";
 
     public override bool run () throws Error {
         if (current_device == null) {
@@ -44,19 +38,19 @@ class BrowseCommand : Command {
         var requested = 0;
         var filter = "upnp:class,dc:title,res@size";
 
-        if (_container == null) {
-            _container = path.top ();
-            if (_container == null) {
-                _container = "0";
+        if (this.container == null) {
+            this.container = path.top ();
+            if (this.container == null) {
+                this.container = "0";
             }
         }
 
-        var result = content_directory.browse (_container,
+        var result = content_directory.browse (this.container,
                                                ContentDirectory.BROWSE_DIRECT_CHILDREN,
                                                filter,
                                                start,
                                                requested,
-                                               _sort_criteria,
+                                               this.sort_criteria,
                                                out returned,
                                                out total);
 
@@ -67,13 +61,28 @@ class BrowseCommand : Command {
         parser.parse_didl (result);
         print ("%u of %u results.\n", returned, total);
 
-        _container = null;
-        _sort_criteria = "+upnp:class,+dc:title";
-
         return true;
     }
 
-    public override OptionEntry[]? options () {
-        return _options;
+    public override OptionEntry[]? get_options () {
+        OptionEntry[] options = new OptionEntry[3];
+
+        options[0] = { "container",
+                       'c',
+                       0,
+                       OptionArg.STRING,
+                       ref this.container,
+                       "ID of the container to browse",
+                       "ID" };
+        options[1] = { "sort-criteria",
+                       's',
+                       0,
+                       OptionArg.STRING,
+                       ref this.sort_criteria,
+                       "sort order of the result",
+                       "SORT-ORDER" };
+        options[2] = { null };
+
+        return options;
     }
 }

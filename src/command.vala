@@ -27,16 +27,16 @@ abstract class Command : Object {
     protected string[] args;
 
     public abstract bool run () throws Error;
-    public virtual OptionEntry[]? options () {
+    public virtual OptionEntry[]? get_options () {
         return null;
     }
 
     public void parse_commandline (string[] args) throws Error {
-        if (this.options() != null) {
+        if (this.get_options () != null) {
             this.context = new OptionContext ("");
             this.context.set_help_enabled (false);
             this.context.set_ignore_unknown_options (true);
-            this.context.add_main_entries (this.options (), null);
+            this.context.add_main_entries (this.get_options (), null);
             this.context.parse (ref args);
         }
     }
