@@ -22,6 +22,22 @@ public errordomain CommandError {
     NOT_CONNECTED
 }
 
+class HelpCommand : Command {
+    public unowned HashTable<string, Type?> registry;
+
+    public override bool run () throws Error {
+        if (this.args.length == 1) {
+            print ("Available commands:\n");
+            foreach (var command in this.registry.get_keys ()) {
+                print ("%s\n", command);
+            }
+            print ("Use help <command> to get help for a specific command\n");
+        }
+
+        return true;
+    }
+}
+
 namespace CommandFactory {
     private static HashTable<string, Type> command_registry;
 
@@ -34,9 +50,11 @@ namespace CommandFactory {
             command_registry.insert ("cd",         typeof (CdCommand));
             command_registry.insert ("connect",    typeof (ConnectCommand));
             command_registry.insert ("disconnect", typeof (DisconnectCommand));
+            command_registry.insert ("help",       typeof (HelpCommand));
             command_registry.insert ("info",       typeof (InfoCommand));
             command_registry.insert ("list",       typeof (ListCommand));
             command_registry.insert ("ls",         typeof (BrowseCommand));
+            command_registry.insert ("?",          typeof (HelpCommand));
         }
 
         Command command;
@@ -55,6 +73,10 @@ namespace CommandFactory {
 
         command = Object.new (type) as Command;
         command.parse_commandline (commandline);
+        if (command is HelpCommand) {
+            (command as HelpCommand).registry =
+                CommandFactory.command_registry;
+        }
 
         return command;
     }
