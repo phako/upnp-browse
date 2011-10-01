@@ -18,6 +18,8 @@
 using GUPnP;
 
 class InfoCommand : Command {
+    private bool show_raw_didle = false;
+
     void dump_container_information (DIDLLiteContainer container) {
         print ("Meta-data for %s\n", container.id);
         print ("  UPnP class: %s\n", container.upnp_class);
@@ -69,18 +71,36 @@ class InfoCommand : Command {
                                                "*",
                                                0,
                                                0);
-        var parser = new DIDLLiteParser ();
-        parser.container_available.connect ( (c) => {
-            this.dump_container_information (c);
-        });
+        if (this.show_raw_didle) {
+            print ("%s\n", result);
+        } else {
+            var parser = new DIDLLiteParser ();
+            parser.container_available.connect ( (c) => {
+                this.dump_container_information (c);
+            });
 
-        parser.item_available.connect ( (i) => {
-            this.dump_item_information (i);
-        });
+            parser.item_available.connect ( (i) => {
+                this.dump_item_information (i);
+            });
 
-        parser.parse_didl (result);
+            parser.parse_didl (result);
+        }
 
         return true;
+    }
 
+    public override OptionEntry[]? get_options () {
+        OptionEntry[] options = new OptionEntry[2];
+        options[0] = { "raw",
+                       'r',
+                       0,
+                       OptionArg.NONE,
+                       ref this.show_raw_didle,
+                       "Do not parse DIDL",
+                       null };
+
+        options[1] = { null };
+
+        return options;
     }
 }
