@@ -98,7 +98,7 @@ class Main : Object {
         Readline.History.add (input);
 
         try {
-            var command = Command.parse (input);
+            var command = CommandFactory.parse (input);
             command.run ();
             this.update_prompt ();
         } catch (Error error) {

@@ -22,11 +22,50 @@ public errordomain CommandError {
     NOT_CONNECTED
 }
 
+namespace CommandFactory {
+    private static HashTable<string, Type> command_registry;
+
+    internal static Command parse (string input) throws Error {
+        if (CommandFactory.command_registry == null) {
+            CommandFactory.command_registry =
+                new HashTable<string, Type?> (str_hash, str_equal);
+
+            command_registry.insert ("browse",     typeof (BrowseCommand));
+            command_registry.insert ("cd",         typeof (CdCommand));
+            command_registry.insert ("connect",    typeof (ConnectCommand));
+            command_registry.insert ("disconnect", typeof (DisconnectCommand));
+            command_registry.insert ("info",       typeof (InfoCommand));
+            command_registry.insert ("list",       typeof (ListCommand));
+            command_registry.insert ("ls",         typeof (BrowseCommand));
+        }
+
+        Command command;
+        string[] commandline;
+        Shell.parse_argv (input, out commandline);
+        Type type;
+
+        if (!CommandFactory.command_registry.lookup_extended (commandline[0].down (),
+                                                              null,
+                                                              out type)) {
+            throw new CommandError.INVALID_COMMAND
+                ("No such command: %s. Use \"help\" to get a list of " +
+                 "possible commands.",
+                 commandline[0]);
+        }
+
+        command = Object.new (type) as Command;
+        command.parse_commandline (commandline);
+
+        return command;
+    }
+}
+
 abstract class Command : Object {
     protected OptionContext context;
     protected string[] args;
 
     public abstract bool run () throws Error;
+
     public virtual OptionEntry[]? get_options () {
         return null;
     }
@@ -38,43 +77,8 @@ abstract class Command : Object {
             this.context.set_ignore_unknown_options (true);
             this.context.add_main_entries (this.get_options (), null);
             this.context.parse (ref args);
+
         }
-    }
-
-    public static Command parse (string input) throws Error {
-        Command command;
-        string[] commandline;
-        Shell.parse_argv (input, out commandline);
-
-        switch (commandline[0].down ()) {
-            case "ls":
-            case "browse":
-                command = new BrowseCommand ();
-                break;
-            case "connect":
-                command = new ConnectCommand ();
-                break;
-            case "list":
-                command = new ListCommand ();
-                break;
-            case "cd":
-                command = new CdCommand ();
-                break;
-            case "info":
-                command = new InfoCommand ();
-                break;
-            case "disconnect":
-                command = new DisconnectCommand ();
-                break;
-            default:
-                throw new CommandError.INVALID_COMMAND
-                                        ("No such command: %s. Use \"help\"" +
-                                         " to get a list of possible commands.",
-                                         commandline[0]);
-        }
-
-        command.parse_commandline (commandline);
-        command.args = commandline;
-        return command;
+        this.args = args;
     }
 }
