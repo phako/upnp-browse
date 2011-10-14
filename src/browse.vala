@@ -51,6 +51,8 @@ class Main : Object {
         var cache_dir = Path.build_filename (data_dir, "upnp-browse");
         var cache_file = Path.build_filename (cache_dir, "history");
 
+        Readline.readline_name = "upnp-browse";
+
         DirUtils.create_with_parents (cache_dir, 0700);
 
         Readline.History.read (cache_file);
