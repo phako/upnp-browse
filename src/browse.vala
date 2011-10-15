@@ -47,6 +47,7 @@ class Main : Object {
     }
 
     public void run () {
+        CommandFactory.init ();
         unowned string data_dir = Environment.get_user_data_dir ();
         var cache_dir = Path.build_filename (data_dir, "upnp-browse");
         var cache_file = Path.build_filename (cache_dir, "history");

@@ -41,8 +41,8 @@ class HelpCommand : Command {
 namespace CommandFactory {
     private static HashTable<string, Type> command_registry;
 
-    internal static Command parse (string input) throws Error {
-        if (CommandFactory.command_registry == null) {
+    public static void init () {
+        if (unlikely(CommandFactory.command_registry == null)) {
             CommandFactory.command_registry =
                 new HashTable<string, Type?> (str_hash, str_equal);
 
@@ -56,7 +56,9 @@ namespace CommandFactory {
             command_registry.insert ("ls",         typeof (BrowseCommand));
             command_registry.insert ("?",          typeof (HelpCommand));
         }
+    }
 
+    internal static Command parse (string input) throws Error {
         Command command;
         string[] commandline;
         Shell.parse_argv (input, out commandline);
