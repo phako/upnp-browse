@@ -85,4 +85,7 @@ class BrowseCommand : Command {
 
         return options;
     }
+
+    public override void help () {
+    }
 }

@@ -24,4 +24,7 @@ class DisconnectCommand : Command {
 
         return true;
     }
+
+    public override void help () {
+    }
 }

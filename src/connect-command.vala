@@ -34,4 +34,7 @@ class ConnectCommand : Command {
 
         return true;
     }
+
+    public override void help () {
+    }
 }

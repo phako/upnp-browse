@@ -103,4 +103,7 @@ class InfoCommand : Command {
 
         return options;
     }
+
+    public override void help () {
+    }
 }

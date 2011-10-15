@@ -26,4 +26,7 @@ class ListCommand : Command {
 
         return true;
     }
+
+    public override void help () {
+    }
 }

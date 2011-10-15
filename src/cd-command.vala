@@ -71,4 +71,7 @@ class CdCommand : Command {
 
         return true;
     }
+
+    public override void help () {
+    }
 }

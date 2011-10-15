@@ -28,13 +28,20 @@ class HelpCommand : Command {
     public override bool run () throws Error {
         if (this.args.length == 1) {
             print ("Available commands:\n");
-            foreach (var command in this.registry.get_keys ()) {
+            var commands = this.registry.get_keys ();
+            commands.sort (strcmp);
+            foreach (var command in commands) {
                 print ("%s\n", command);
             }
             print ("Use help <command> to get help for a specific command\n");
+        } else {
+            CommandFactory.parse (this.args[1]).help ();
         }
 
         return true;
+    }
+
+    public override void help () {
     }
 }
 
@@ -43,6 +50,9 @@ class QuitCommand : Command {
         Main.get_instance ().quit ();
 
         return true;
+    }
+
+    public override void help () {
     }
 }
 
@@ -100,6 +110,8 @@ abstract class Command : Object {
     protected string[] args;
 
     public abstract bool run () throws Error;
+
+    public abstract void help ();
 
     public virtual OptionEntry[]? get_options () {
         return null;
