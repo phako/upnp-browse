@@ -38,6 +38,14 @@ class HelpCommand : Command {
     }
 }
 
+class QuitCommand : Command {
+    public override bool run () throws Error {
+        Main.get_instance ().quit ();
+
+        return true;
+    }
+}
+
 namespace CommandFactory {
     private static HashTable<string, Type> command_registry;
 
@@ -47,6 +55,7 @@ namespace CommandFactory {
                 new HashTable<string, Type?> (str_hash, str_equal);
 
             command_registry.insert ("browse",     typeof (BrowseCommand));
+            command_registry.insert ("bye",        typeof (QuitCommand));
             command_registry.insert ("cd",         typeof (CdCommand));
             command_registry.insert ("connect",    typeof (ConnectCommand));
             command_registry.insert ("disconnect", typeof (DisconnectCommand));
@@ -54,6 +63,8 @@ namespace CommandFactory {
             command_registry.insert ("info",       typeof (InfoCommand));
             command_registry.insert ("list",       typeof (ListCommand));
             command_registry.insert ("ls",         typeof (BrowseCommand));
+            command_registry.insert ("q",          typeof (QuitCommand));
+            command_registry.insert ("quit",       typeof (QuitCommand));
             command_registry.insert ("?",          typeof (HelpCommand));
         }
     }

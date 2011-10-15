@@ -75,6 +75,11 @@ class Main : Object {
         Readline.History.write (cache_file);
     }
 
+    public void quit () {
+        Readline.callback_handler_remove ();
+        this.loop.quit ();
+    }
+
     void update_prompt () {
         if (current_device != null) {
             this.prompt = current_device.get_friendly_name ();
@@ -86,10 +91,8 @@ class Main : Object {
     }
 
     void run_command (string? input) {
-        if (input == null ||
-            this.is_quit_command (input)) {
-            Readline.callback_handler_remove ();
-            loop.quit ();
+        if (input == null) {
+            this.quit ();
 
             return;
         }
@@ -107,12 +110,6 @@ class Main : Object {
         } catch (Error error) {
             print ("%s\n", error.message);
         }
-    }
-
-    private bool is_quit_command (string command) {
-        return command == "q" ||
-               command == "quit" ||
-               command == "bye";
     }
 
 }
