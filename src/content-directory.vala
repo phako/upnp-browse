@@ -57,4 +57,37 @@ public class ContentDirectory : Object {
 
         return result;
     }
+
+    public string search (string   id     = "0",
+                          string   search_criteria = "",
+                          string   filter = "dc:title",
+                          uint     start  = 0,
+                          uint     limit  = 0,
+                          string   sort_criteria = "+dc:title",
+                          out uint returned = null,
+                          out uint total = null) throws Error {
+        string result = null;
+        uint inner_returned;
+        uint inner_total;
+
+        this.proxy.send_action (
+                          "Search",
+                          "ContainerID", typeof (string), id,
+                          "SearchCriteria", typeof (string), search_criteria,
+                          "Filter", typeof (string), filter,
+                          "StartingIndex", typeof (uint), start,
+                          "RequestedCount", typeof (uint), limit,
+                          "SortCriteria", typeof (string), sort_criteria,
+                          null,
+                          "Result", typeof (string), out result,
+                          "NumberReturned", typeof (uint), out inner_returned,
+                          "TotalMatches", typeof (uint), out inner_total,
+                          null);
+        returned = inner_returned;
+        total = inner_total;
+
+        return result;
+    }
+
+
 }

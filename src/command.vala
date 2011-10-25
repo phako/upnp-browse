@@ -75,6 +75,7 @@ namespace CommandFactory {
             command_registry.insert ("ls",         typeof (BrowseCommand));
             command_registry.insert ("q",          typeof (QuitCommand));
             command_registry.insert ("quit",       typeof (QuitCommand));
+            command_registry.insert ("search",     typeof (SearchCommand));
             command_registry.insert ("?",          typeof (HelpCommand));
         }
     }

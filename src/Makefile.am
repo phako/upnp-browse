@@ -11,6 +11,7 @@ upnp_browse_SOURCES = \
 	disconnect-command.vala \
 	info-command.vala \
 	list-command.vala \
+	search-command.vala \
 	upnp-device-lister.vala
 
 upnp_browse_VALAFLAGS = \
