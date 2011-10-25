@@ -107,6 +107,7 @@ namespace CommandFactory {
 
 abstract class Command : Object {
     protected OptionContext context;
+    protected OptionGroup option_group;
     protected string[] args;
 
     public abstract bool run () throws Error;
@@ -120,11 +121,12 @@ abstract class Command : Object {
     public void parse_commandline (string[] args) throws Error {
         if (this.get_options () != null) {
             this.context = new OptionContext ("");
+            this.option_group = new OptionGroup ("", "", "");
+            this.option_group.add_entries (this.get_options ());
+            this.context.add_group ((owned) this.option_group);
             this.context.set_help_enabled (false);
             this.context.set_ignore_unknown_options (true);
-            this.context.add_main_entries (this.get_options (), null);
             this.context.parse (ref args);
-
         }
         this.args = args;
     }

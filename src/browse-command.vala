@@ -87,5 +87,7 @@ class BrowseCommand : Command {
     }
 
     public override void help () {
+        string help = context.get_help (false, this.option_group);
+        print ("%s\n", help);
     }
 }

@@ -28,5 +28,7 @@ class ListCommand : Command {
     }
 
     public override void help () {
+        print ("Usage: list\n");
+        print ("Display a list of currently available media servers\n");
     }
 }
