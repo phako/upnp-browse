@@ -16,7 +16,7 @@ AM_INIT_AUTOMAKE([1.11.1 tar-ustar no-dist-gzip dist-xz])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
-PKG_CHECK_MODULES(GUPNP, gupnp-1.0 >= 0.18 gupnp-av-1.0 >= 0.9)
+PKG_CHECK_MODULES(GUPNP, gobject-2.0 gssdp-1.0 gupnp-1.0 >= 0.18 gupnp-av-1.0 >= 0.9)
 AC_CHECK_LIB([readline],[main],
             [AC_SUBST([READLINE_LIBS], ["-lreadline"])],
             [AC_MSG_ERROR([libreadline support not found])])
