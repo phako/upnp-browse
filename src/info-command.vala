@@ -26,6 +26,25 @@ class InfoCommand : Command {
         print ("  Parent:     %s\n", container.parent_id);
         print ("  Children:   %d\n", container.child_count);
         print ("  Searchable: %s\n", container.searchable.to_string ());
+
+        print ("  Resources:\n");
+        print ("  ----------\n");
+
+        foreach (var res in container.get_resources ()) {
+            print ("    Uri: %s\n", res.uri);
+            if (res.size64 != -1)
+                print ("      Size: %s (%lld)\n",
+                       format_size_for_display (res.size64),
+                       res.size64);
+
+            if (res.protocol_info != null) {
+                print ("      DLNA protocol info: %s\n",
+                       res.protocol_info.to_string ());
+            }
+
+            print ("\n");
+        }
+
     }
 
     void dump_item_information (DIDLLiteItem item) {
