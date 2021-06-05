@@ -39,19 +39,20 @@ public class ContentDirectory : Object {
         uint inner_returned;
         uint inner_total;
 
-        this.proxy.send_action (
+        var action = new GUPnP.ServiceProxyAction (
                           "Browse",
                           "ObjectID", typeof (string), id,
                           "BrowseFlag", typeof (string), flag,
                           "Filter", typeof (string), filter,
                           "StartingIndex", typeof (uint), start,
                           "RequestedCount", typeof (uint), limit,
-                          "SortCriteria", typeof (string), sort_criteria,
-                          null,
-                          "Result", typeof (string), out result,
-                          "NumberReturned", typeof (uint), out inner_returned,
-                          "TotalMatches", typeof (uint), out inner_total,
-                          null);
+                          "SortCriteria", typeof (string), sort_criteria);
+
+        this.proxy.call_action (action, null);
+
+        action.get_result ("Result", typeof (string), out result,
+                           "NumberReturned", typeof (uint), out inner_returned,
+                           "TotalMatches", typeof (uint), out inner_total);
         returned = inner_returned;
         total = inner_total;
 
@@ -70,19 +71,20 @@ public class ContentDirectory : Object {
         uint inner_returned;
         uint inner_total;
 
-        this.proxy.send_action (
-                          "Search",
+        var action = new ServiceProxyAction("Search", 
                           "ContainerID", typeof (string), id,
                           "SearchCriteria", typeof (string), search_criteria,
                           "Filter", typeof (string), filter,
                           "StartingIndex", typeof (uint), start,
                           "RequestedCount", typeof (uint), limit,
-                          "SortCriteria", typeof (string), sort_criteria,
-                          null,
+                          "SortCriteria", typeof (string), sort_criteria);
+
+       this.proxy.call_action (action);
+
+       action.get_result(
                           "Result", typeof (string), out result,
                           "NumberReturned", typeof (uint), out inner_returned,
-                          "TotalMatches", typeof (uint), out inner_total,
-                          null);
+                          "TotalMatches", typeof (uint), out inner_total);
         returned = inner_returned;
         total = inner_total;
 
