@@ -33,9 +33,8 @@ class InfoCommand : Command {
         foreach (var res in container.get_resources ()) {
             print ("    Uri: %s\n", res.uri);
             if (res.size64 != -1)
-                print ("      Size: %s (%lld)\n",
-                       format_size_for_display (res.size64),
-                       res.size64);
+                print ("      Size: %s",
+                       format_size (res.size64, FormatSizeFlags.LONG_FORMAT));
 
             if (res.protocol_info != null) {
                 print ("      DLNA protocol info: %s\n",
@@ -61,9 +60,8 @@ class InfoCommand : Command {
         foreach (var res in item.get_resources ()) {
             print ("    Uri: %s\n", res.uri);
             if (res.size64 != -1)
-                print ("      Size: %s (%lld)\n",
-                       format_size_for_display (res.size64),
-                       res.size64);
+                print ("      Size: %s",
+                       format_size (res.size64, FormatSizeFlags.LONG_FORMAT));
 
             if (res.protocol_info != null) {
                 print ("      DLNA protocol info: %s\n",

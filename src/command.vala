@@ -98,7 +98,7 @@ namespace CommandFactory {
         command = Object.new (type) as Command;
         command.parse_commandline (commandline);
         if (command is HelpCommand) {
-            (command as HelpCommand).registry =
+            ((HelpCommand)command).registry =
                 CommandFactory.command_registry;
         }
 
